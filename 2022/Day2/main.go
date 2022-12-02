@@ -25,36 +25,47 @@ func rockPaperScissors() (int, error) {
 	return totalPoints, nil
 }
 
-func getClashPoints(playerChoice string, elfChoice string) int {
+func getClashPoints(desiredOutcome string, elfChoice string) int {
 	roundScore := 0
-	switch playerChoice {
-	case "X": // Rock
-		roundScore += 1
-		if elfChoice == "A" { // Rock
-			roundScore += 3
-		} else if elfChoice == "C" { // Scissors
-			roundScore += 6
-		} else {
-			roundScore += 0
+	switch elfChoice {
+	case "A": // Rock
+		if desiredOutcome == "X" { // Lose
+			roundScore += 3 // 3 for scissors, 0 for losing
+			break
+		} else if desiredOutcome == "Y" { // Draw
+			roundScore += 4 // 1 for rock, 3 for drawing
+			break
+		} else if desiredOutcome == "Z" { // Win
+			roundScore += 8 // 2 for paper, 6 for winning
+			break
 		}
-	case "Y": // Paper
-		roundScore += 2
-		if elfChoice == "B" { // Paper
-			roundScore += 3
-		} else if elfChoice == "A" { // Rock
-			roundScore += 6
-		} else {
-			roundScore += 0
+		panic("Invalid outcome")
+
+	case "B": // Paper
+		if desiredOutcome == "X" { // Lose
+			roundScore += 1 // 1 for rock, 0 for losing
+			break
+		} else if desiredOutcome == "Y" { // Draw
+			roundScore += 5 // 2 for paper, 3 for drawing
+			break
+		} else if desiredOutcome == "Z" { // Win
+			roundScore += 9 // 3 for scissors, 6 for winning
+			break
 		}
-	case "Z": // Scissors
-		roundScore += 3
-		if elfChoice == "C" { // Scissors
-			roundScore += 3
-		} else if elfChoice == "B" { // Paper
-			roundScore += 6
-		} else {
-			roundScore += 0
+		panic("Invalid outcome")
+
+	case "C": // Scissors
+		if desiredOutcome == "X" { // Lose
+			roundScore += 2 // 2 for paper, 0 for losing
+			break
+		} else if desiredOutcome == "Y" { // Draw
+			roundScore += 6 // 3 for scissors, 3 for drawing
+			break
+		} else if desiredOutcome == "Z" { // Win
+			roundScore += 7 // 1 for rock, 6 for winning
+			break
 		}
+		panic("Invalid outcome")
 
 	default:
 		panic("Invalid player choice")
