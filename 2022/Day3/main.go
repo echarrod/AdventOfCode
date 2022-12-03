@@ -14,17 +14,16 @@ func rucksackReorganisation(filename string) (int, error) {
 	sumPriorities := 0
 
 	rucksacks := strings.Split(string(file), "\n")
-	for _, r := range rucksacks {
-		mid := len(r) / 2
-		leftPart := r[:mid]
-		rightPart := r[mid:]
-
-		for _, lc := range leftPart {
-			if strings.ContainsRune(rightPart, lc) {
-				sumPriorities += getPriority(lc)
-				break
+	for k, _ := range rucksacks {
+		if k > 0 && (k+1)%3 == 0 {
+			for _, b := range rucksacks[k] {
+				if strings.ContainsRune(rucksacks[k-1], b) && strings.ContainsRune(rucksacks[k-2], b) {
+					sumPriorities += getPriority(b)
+					break
+				}
 			}
 		}
+
 	}
 
 	return sumPriorities, nil
