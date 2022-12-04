@@ -6,13 +6,12 @@ import (
 	"strings"
 )
 
-func campCleanup(filename string) (int, error) {
+func campCleanup(filename string) (contained int, overlaps int, err error) {
 	file, err := os.ReadFile(filename)
 	if err != nil {
-		return 0, err
+		return 0, 0, err
 	}
 
-	contained := 0
 	for _, lines := range strings.Fields(string(file)) {
 		assignments := strings.Split(lines, ",")
 
@@ -28,7 +27,12 @@ func campCleanup(filename string) (int, error) {
 			elf2Start >= elf1Start && elf2Finish <= elf1Finish {
 			contained++
 		}
+
+		if elf1Finish >= elf2Start && elf1Start <= elf2Start ||
+			elf2Finish >= elf1Start && elf2Start <= elf1Start {
+			overlaps++
+		}
 	}
 
-	return contained, nil
+	return contained, overlaps, nil
 }
