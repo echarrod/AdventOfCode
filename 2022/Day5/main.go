@@ -12,10 +12,48 @@ type Movement struct {
 	to   int
 }
 
-func parseCrates(filename string) (topOfStacks string, err error) {
-	file, err := os.ReadFile(filename)
+func CrateMover9000(filename string) (string, error) {
+	stacks, moves, maxCrate, err := parseCrates(filename)
 	if err != nil {
 		return "", err
+	}
+
+	for _, move := range moves {
+		for i := 0; i < move.move; i++ {
+			stacks[move.to] = string(stacks[move.from][0]) + stacks[move.to]
+			stacks[move.from] = stacks[move.from][1:]
+		}
+	}
+
+	return getTopCrates(maxCrate, stacks), nil
+}
+
+func CrateMover9001(filename string) (string, error) {
+	stacks, moves, maxCrate, err := parseCrates(filename)
+	if err != nil {
+		return "", err
+	}
+
+	for _, move := range moves {
+		stacks[move.to] = stacks[move.from][:move.move] + stacks[move.to]
+		stacks[move.from] = stacks[move.from][move.move:]
+	}
+
+	return getTopCrates(maxCrate, stacks), nil
+}
+
+func getTopCrates(maxCrate int, stacks map[int]string) string {
+	var result strings.Builder
+	for i := 1; i <= maxCrate; i++ {
+		result.WriteRune(rune(stacks[i][0]))
+	}
+	return result.String()
+}
+
+func parseCrates(filename string) (map[int]string, []Movement, int, error) {
+	file, err := os.ReadFile(filename)
+	if err != nil {
+		return nil, nil, 0, err
 	}
 	maxCrate := 0
 	readyForInstructions := false
@@ -56,17 +94,5 @@ func parseCrates(filename string) (topOfStacks string, err error) {
 
 	}
 
-	for _, move := range moves {
-		for i := 0; i < move.move; i++ {
-			stacks[move.to] = string(stacks[move.from][0]) + stacks[move.to]
-			stacks[move.from] = stacks[move.from][1:]
-		}
-	}
-
-	var result strings.Builder
-	for i := 1; i <= maxCrate; i++ {
-		result.WriteRune(rune(stacks[i][0]))
-	}
-
-	return result.String(), nil
+	return stacks, moves, maxCrate, nil
 }
