@@ -1,35 +1,30 @@
 package main
 
 import (
-	"errors"
 	"os"
 )
 
-func demo() (int, error) {
-	return part("example-input.txt")
-}
-
-func part1() (int, error) {
-	return part("input.txt")
-}
-
-func part(input string) (int, error) {
+func indexOfStart(input string) (partA int, partB int, err error) {
 	file, err := os.ReadFile(input)
 	if err != nil {
-		return 0, err
+		return 0, 0, err
 	}
 
 	line := string(file)
 	for i := 3; i < len(line); i++ {
-		if unique(line[i-3 : i+1]) {
-			return i + 1, nil
+		if isUnique(line[i-3:i+1]) && partA == 0 {
+			partA = i + 1
+		}
+
+		if i > 12 && isUnique(line[i-13:i+1]) && partB == 0 {
+			partB = i + 1
 		}
 	}
 
-	return 0, errors.New("unique chars not found")
+	return partA, partB, nil
 }
 
-func unique(s string) bool {
+func isUnique(s string) bool {
 	set := map[rune]bool{}
 	for _, c := range s {
 		set[c] = true
