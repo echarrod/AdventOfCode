@@ -6,9 +6,16 @@ import (
 	"strings"
 )
 
-const maxSize = 100000
+const (
+	maxSize     = 100000
+	diskSpace   = 70000000
+	unusedSpace = 30000000
+)
 
-var totalCount = 0
+var (
+	totalSize   = 0
+	minimumSize = 10000000
+)
 
 type Dir struct {
 	name            string
@@ -17,10 +24,10 @@ type Dir struct {
 	subDirectoryMap map[string]*Dir
 }
 
-func sumDirectorySizes(filename string) (result int, err error) {
+func sumDirectorySizes(filename string) (partA int, partB int, err error) {
 	file, err := os.ReadFile(filename)
 	if err != nil {
-		return 0, err
+		return 0, 0, err
 	}
 	rootDir := &Dir{
 		name:            "/",
@@ -32,7 +39,7 @@ func sumDirectorySizes(filename string) (result int, err error) {
 	sumSizes(rootDir)
 	traverse(rootDir, rootDir)
 
-	return totalCount, err
+	return totalSize, minimumSize, err
 }
 
 func buildFileSystem(file []byte, rootDir *Dir) {
@@ -67,6 +74,7 @@ func handleUserInput(elem2 string, lineFields []string, currentDir *Dir) *Dir {
 			currentDir = currentDir.subDirectoryMap[elem3]
 		}
 	}
+
 	return currentDir
 }
 
@@ -78,8 +86,7 @@ func handleOutput(elem1 string, currentDir *Dir, elem2 string) {
 			subDirectoryMap: make(map[string]*Dir),
 		}
 	} else {
-		fileSize := util.MustAtoI(elem1)
-		currentDir.size += fileSize
+		currentDir.size += util.MustAtoI(elem1)
 	}
 }
 
@@ -99,7 +106,7 @@ func sumSizes(dir *Dir) int {
 		dir.size += sumSizes(v)
 	}
 	if dir.size < maxSize {
-		totalCount += dir.size
+		totalSize += dir.size
 	}
 	return dir.size
 }

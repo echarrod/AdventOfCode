@@ -9,13 +9,14 @@ import (
 )
 
 func Test_directory_demo(t *testing.T) {
-	size, err := sumDirectorySizes("example-input.txt")
+	size, _, err := sumDirectorySizes("example-input.txt")
 	require.Nil(t, err)
 	assert.Equal(t, 95437, size)
 }
 
-func Test_day6(t *testing.T) {
-	size, err := sumDirectorySizes("input.txt")
+func Test_day7(t *testing.T) {
+	size, minSize, err := sumDirectorySizes("input.txt")
 	require.Nil(t, err)
 	fmt.Println(size)
+	fmt.Println(minSize)
 }
