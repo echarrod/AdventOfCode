@@ -16,6 +16,11 @@ func partA(filename string) (int, error) {
 	return day9(filename, knots)
 }
 
+func partB(filename string) (int, error) {
+	var knots = []Coord{{0, 0}, {0, 0}, {0, 0}, {0, 0}, {0, 0}, {0, 0}, {0, 0}, {0, 0}, {0, 0}, {0, 0}}
+	return day9(filename, knots)
+}
+
 func day9(filename string, knots []Coord) (int, error) {
 	file := util.MustReadFile(filename)
 
@@ -25,7 +30,7 @@ func day9(filename string, knots []Coord) (int, error) {
 		direction := l[0]
 		steps := util.MustAtoI(string(l[2]))
 
-		for i := 0; i < steps; i++ {
+		for i := 0; i <= steps; i++ {
 			switch direction {
 			case 'R':
 				knots[0].x += 1

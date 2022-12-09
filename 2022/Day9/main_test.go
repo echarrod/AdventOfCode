@@ -14,8 +14,14 @@ func Test_demo(t *testing.T) {
 	assert.Equal(t, 13, a)
 }
 
-func Test_input(t *testing.T) {
+func Test_inputA(t *testing.T) {
 	a, err := partA("input.txt")
 	require.Nil(t, err)
 	fmt.Println(a)
+}
+
+func Test_inputB(t *testing.T) {
+	b, err := partB("input.txt")
+	require.Nil(t, err)
+	fmt.Println(b)
 }
