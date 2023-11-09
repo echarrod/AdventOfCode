@@ -1,6 +1,15 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "config:recommended"
+    "config:base"
+  ],
+  "addLabels": [
+    "Bot::Renovate"
+  ],
+  "semanticCommits": "disabled",
+  "commitMessagePrefix": "renovate:",
+  "postUpdateOptions": [
+    "gomodTidyE",
+    "gomodUpdateImportPaths"
   ]
 }
