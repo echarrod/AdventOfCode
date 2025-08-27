@@ -3,7 +3,7 @@ module aoc
 go 1.19
 
 require (
-	github.com/stretchr/testify v1.10.0
+	github.com/stretchr/testify v1.11.1
 	gotest.tools/v3 v3.5.2
 )
 
